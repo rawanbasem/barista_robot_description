@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    
+<xacro:property name="wheel_width" value="0.0206"/>
+<xacro:property name="wheel_radius" value="0.0352"/>
+
+<!-- Wheel Macro -->
+  <xacro:macro name="drive_wheel" params="wheel_name material parent x y z">
+    <link name="${wheel_name}">    
+        <visual>
+            <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+            <geometry>
+              <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+            </geometry>
+            <material name="${material}"/>
+        </visual>
+
+        <collision>
+            <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+            <geometry>
+            <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+            </geometry>
+        </collision>
+
+        <inertial>
+            <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+            <mass value="0.1"/>
+            <inertia ixx="3.451233e-05" ixy="0" ixz="0" iyy="3.451233e-05" iyz="0" izz="6.1952e-05"/>
+        </inertial>
+    </link>
+
+  <gazebo reference="${wheel_name}">
+    <collision>
+        <surface>
+        <friction>
+            <ode>
+            <mu>10.0</mu>
+            <mu2>10.0</mu2>
+            </ode>
+        </friction>
+        <contact>
+            <ode>
+            <kp>10000000.0</kp>
+            <kd>10000000.0</kd>
+            </ode>
+        </contact>
+        </surface>
+    </collision>
+  </gazebo>
+
+    <joint name="joint_${wheel_name}_wheel" type="continuous">  
+        <origin rpy="0 0 0" xyz="${x} ${y} ${z}"/>
+        <child link="${wheel_name}"/>
+        <parent link="${parent}"/>
+        <axis rpy="0 0 0" xyz="0 1 0"/>
+        <limit effort="10000" velocity="1000"/>
+        <joint_properties damping="1.0" friction="1.0"/>
+    </joint>
+
+  </xacro:macro>
+
+</robot>

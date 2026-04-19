@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    
+<xacro:property name="caster_wheel_height" value="0.01"/>
+<xacro:property name="caster_wheel_radius" value="0.015"/>
+
+<!-- Caster wheel macro-->
+<xacro:macro name="caster_wheel" params=" pos material parent x y z">
+
+  <link name="${pos}_yaw_link">
+    <visual>
+        <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+        <geometry>
+          <cylinder length="${caster_wheel_height}" radius="${caster_wheel_radius}"/>
+        </geometry>
+        <material name="${material}"/>
+      </visual>
+
+      <collision>
+        <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+        <geometry>
+          <cylinder length="${caster_wheel_height}" radius="${caster_wheel_radius}"/>
+        </geometry>
+      </collision>
+
+      <inertial>
+          <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+          <mass value="0.001"/>
+          <inertia ixx="6.4583e-08" ixy="0" ixz="0" iyy="6.4583e-08" iyz="0" izz="1.125e-07"/>
+      </inertial>
+  </link>
+
+  <joint name="${pos}_yaw_joint" type="continuous">
+    <origin rpy="0 0 0" xyz="${x} ${y} ${z}" />
+    <parent link="${parent}"/>
+    <child link="${pos}_yaw_link" />
+    <axis xyz="0 0 1" />
+    <limit effort="1000.0" velocity="100.0" />
+    <dynamics damping="0.0" friction="0.1"/>
+  </joint>
+
+  <link name="${pos}_roll_link">
+      <visual>
+        <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+        <geometry>
+          <cylinder length="${caster_wheel_height}" radius="${caster_wheel_radius}"/>
+        </geometry>
+        <material name="${material}"/>
+      </visual>
+
+      <collision>
+        <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+        <geometry>
+          <cylinder length="${caster_wheel_height}" radius="${caster_wheel_radius}"/>
+        </geometry>
+      </collision>
+
+      <inertial>
+          <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+          <mass value="0.001"/>
+          <inertia ixx="6.4583e-08" ixy="0" ixz="0" iyy="6.4583e-08" iyz="0" izz="1.125e-07"/>
+      </inertial>
+  </link>
+
+  <joint name="${pos}_roll_joint" type="continuous">
+    <origin rpy="0 0 0" xyz="0 0 0" />
+    <parent link="${pos}_yaw_link" />
+    <child link="${pos}_roll_link" />
+    <axis xyz="1 0 0" />
+    <limit effort="1000.0" velocity="100.0" />
+    <dynamics damping="0.0" friction="0.1"/>
+  </joint>
+
+  <link name="${pos}_pitch_link">
+    <visual>
+      <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+      <geometry>
+        <sphere radius="${caster_wheel_radius}"/>
+      </geometry>
+      <material name="${material}"/>
+    </visual>
+
+    <collision>
+      <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+      <geometry>
+        <sphere radius="${caster_wheel_radius}"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+        <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+        <mass value="0.015"/>
+        <inertia ixx="1.35e-06" ixy="0" ixz="0" iyy="1.35e-06" iyz="0" izz="1.35e-06"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="${pos}_pitch_link">
+    <collision>
+        <surface>
+        <friction>
+            <ode>
+            <mu>0.5</mu>
+            <mu2>0.5</mu2>
+            </ode>
+        </friction>
+        <contact>
+            <ode>
+            <kp>10000000.0</kp>
+            <kd>10000000.0</kd>
+            </ode>
+        </contact>
+        </surface>
+    </collision>
+  </gazebo>
+
+   <joint name="${pos}_pitch_joint" type="continuous">
+        <origin rpy="0 0 0" xyz="0 0 0" />
+        <parent link="${pos}_roll_link" />
+        <child link="${pos}_pitch_link" />
+        <axis xyz="0 1 0" />
+        <limit effort="1000.0" velocity="100.0" />
+        <dynamics damping="0.0" friction="0.1"/>
+   </joint>
+
+  </xacro:macro>
+
+</robot>
