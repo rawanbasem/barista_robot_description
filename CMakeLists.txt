@@ -16,7 +16,6 @@ install(DIRECTORY
   urdf
   meshes
 #  config
-  xacro
   rviz
   DESTINATION share/${PROJECT_NAME}
 )
