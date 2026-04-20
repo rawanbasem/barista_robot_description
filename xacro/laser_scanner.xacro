@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
   
-  <xacro:macro name="laser_scanner" params="parent x y z">
+  <xacro:macro name="laser_scanner" params="parent x y z robot_name">
     
     <link name="laser_scan_link">
       <visual>
@@ -55,8 +55,8 @@
             <resolution>0.01</resolution>
           </range>
         </ray>
-        <topic>scan</topic>
-        <gz_frame_id>laser_scan_link</gz_frame_id>
+        <topic>${robot_name}/scan</topic>
+        <gz_frame_id>${robot_name}/laser_scan_link</gz_frame_id>
       </sensor>
     </gazebo>
 

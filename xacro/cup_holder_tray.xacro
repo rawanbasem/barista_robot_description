@@ -5,14 +5,19 @@
 <xacro:property name="tray_radius" value="0.16"/>
 
 <!-- Cup Holder Tray Macro -->
-  <xacro:macro name="cup_holder_tray" params="material parent x y z">
+  <xacro:macro name="cup_holder_tray" params="parent x y z robot_name">
     <link name="cup_holder_tray">
     <visual>
         <origin rpy="0 0 0" xyz="0 0 0"/>
         <geometry>
           <cylinder length="${tray_height}" radius="${tray_radius}"/>
         </geometry>
-        <material name="${material}"/>
+        <xacro:if value="${robot_name == 'rick'}">
+            <material name="red"/>
+        </xacro:if>
+        <xacro:unless value="${robot_name == 'rick'}">
+            <material name="blue"/>
+        </xacro:unless>
     </visual>
 
     <collision>
