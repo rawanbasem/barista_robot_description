@@ -579,6 +579,7 @@
   <!-- Laser Scanner Sensor Plugin -->
     <gazebo reference="laser_scan_link">
     <sensor name="laser_sensor" type="gpu_lidar">
+        <pose>0 0 0.035 0 0 0</pose>
         <topic>/scan</topic>
         <update_rate>10</update_rate>
         <gz_frame_id>laser_scan_link</gz_frame_id>
