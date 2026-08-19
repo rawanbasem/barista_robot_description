@@ -547,39 +547,42 @@
 <!-- Laser Position Control 0.105 kg -->
   <link name="laser_scan_link">
     <visual>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <geometry>
+        <!-- Shift mesh down so base rests on chassis -->
+        <origin rpy="0 0 0" xyz="0 0 -0.035"/>
+        <geometry>
         <mesh filename="package://barista_robot_description/meshes/slamtec_rplidar_s1.dae" scale="1.0 1.0 1.0"/>
-      </geometry>
+        </geometry>
     </visual>
 
     <collision>
-        <origin rpy="0 0 0" xyz="0 0 0"/> 
+        <origin rpy="0 0 0" xyz="0 0 -0.035"/> 
         <geometry>
-            <cylinder radius="0.02775" length="0.051"/>
+        <cylinder radius="0.02775" length="0.051"/>
         </geometry>
     </collision>
 
     <inertial>
-      <mass value="0.105"/>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <inertia 
-        ixx="4.297289e-05" ixy="0.0" ixz="0.0" 
-        iyy="4.297289e-05" iyz="0.0" 
-        izz="4.042828e-05"/>
-    </inertial>
-  </link>
+        <mass value="0.105"/>
+        <origin rpy="0 0 0" xyz="0 0 -0.035"/>
+        <inertia 
+            ixx="4.297289e-05" ixy="0.0" ixz="0.0" 
+            iyy="4.297289e-05" iyz="0.0" 
+            izz="4.042828e-05"/>
+        </inertial>
+    </link>
 
-  <joint name="laser_scan_link_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0.100 0.0 0.0775"/>
-    <parent link="chassis"/>
-    <child link="laser_scan_link"/>
-  </joint>
+    <joint name="laser_scan_link_joint" type="fixed">
+    <!-- Elevated Z from 0.0775 to 0.1125 (lens height) -->
+        <origin rpy="0 0 0" xyz="0.100 0.0 0.1125"/>
+            <parent link="chassis"/>
+        <child link="laser_scan_link"/>
+    </joint>
 
   <!-- Laser Scanner Sensor Plugin -->
     <gazebo reference="laser_scan_link">
     <sensor name="laser_sensor" type="gpu_lidar">
-        <pose>0 0 0.035 0 0 0</pose>
+        <!-- Origin matches the laser_scan_link TF frame -->
+        <pose>0 0 0 0 0 0</pose>
         <topic>/scan</topic>
         <update_rate>10</update_rate>
         <gz_frame_id>laser_scan_link</gz_frame_id>
